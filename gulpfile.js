@@ -1,6 +1,8 @@
 // gulp
 var gulp = require('gulp');
 
+var deploy      = require('gulp-gh-pages');
+
 // plugins
 var connect = require('gulp-connect');
 var jshint = require('gulp-jshint');
@@ -119,4 +121,12 @@ gulp.task('build', ['clean'],function() {
     ['lint', 'minify-css','minify-js-app', 'minify-js', 'concat','copy-html-files',
     'copy-html-index', 'copy-node-modules', 'copy-font-awesome','copy-images','watch','connectDist']
   );
+});
+
+/**
+ * Push build to gh-pages
+ */
+gulp.task('deploy', function () {
+  return gulp.src("./dist/**/*")
+    .pipe(deploy())
 });
