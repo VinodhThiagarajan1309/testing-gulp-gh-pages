@@ -119,9 +119,18 @@ gulp.task('default',
 gulp.task('build', ['clean'],function() {
   runSequence(
     ['lint', 'minify-css','minify-js-app', 'minify-js', 'concat','copy-html-files',
-    'copy-html-index', 'copy-node-modules', 'copy-font-awesome','copy-images','watch','connectDist']
+    'copy-html-index', 'copy-node-modules', 'copy-font-awesome','copy-images','watch','connectDist','createFile']
   );
 });
+
+gulp.task('createFile', function() {
+    var filename = '.dingo';
+    var string = "";
+
+     gulp.src('.nojekyll')
+    .pipe(gulp.dest('dist/'));
+});
+
 
 /**
  * Push build to gh-pages
