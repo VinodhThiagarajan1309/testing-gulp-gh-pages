@@ -70,7 +70,7 @@ gulp.task('copy-images', function() {
 
 gulp.task('copy-node-modules', function () {
   gulp.src('!./node_modules/**')
-    .pipe(gulp.dest('dist/node_modules'));
+    .pipe(gulp.dest('dist/cade'));
 });
 
 gulp.task('copy-font-awesome', function () {
