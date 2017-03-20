@@ -1,0 +1,80 @@
+<div class="col-sm-9 col-sm-offset-1 col-md-10 col-md-offset-1 main" ng-controller="MainController as main">
+   <h2 class="page-header">Bill for the month</h2>
+   <div class="bill" ng-controller="BillController as bill">
+      <div class="row placeholders ">
+      <info-message ng-if="bill.billMessage" message="bill.billMessage"></info-message>
+         <div class="col-xs-5 col-sm-2 placeholder" ng-style="{background:bill.getRandomColor(bill,$index)}">
+            <h4>Label</h4>
+            <span >Something else</span>
+         </div>
+      </div>
+      <h2 class="sub-header">Bill Details</h2>
+      <p class="billMessage" ng-show="bill.billList.length < 1" >No Bills for the Bill Shell</p>
+      <button class="btn btn-primary" 
+         ng-click="bill.toggleModal('Add Bill',{})">New Bill</button>
+      <div  class="table-responsive table-details">
+         <table  ng-show="bill.billList.length > 0" class="table table-striped">
+            <thead>
+               <tr>
+                  <th ng-repeat="header in main.billHeader">{{header | uppercase}}</th>
+               </tr>
+            </thead>
+            <tbody >
+               <tr ng-repeat="bills in bill.filteredList">
+                  <td>{{bills.billType}}</td>
+                  <td>{{bills.description}}</td>
+                  <td>{{bills.itemAmount | currency:"$ "}}</td>
+                  <td>{{bills.date | date: 'MMM d, y'}}</td>
+                  <td><button type="button" class="btn btn-default" ng-click="bill.toggleModal('Edit Bill',bills,$index)"><i class="glyphicon glyphicon-pencil">
+                     </i></button>
+                     <button type="button" class="btn btn-danger" ng-click="bill.deleteBill(bills,$index)"><i class="glyphicon glyphicon-trash">
+                     </i></button>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+         <ul uib-pagination 
+            ng-model="bill.currentPage"
+            total-items="bill.billList.length"
+            max-size="bill.maxSize"  
+            boundary-links="true" ng-change="bill.listFilter()">
+         </ul>
+      </div>
+      <modal class="createNewModal" visible="showModal">
+         <form name="bill.billCreate" id="billCreate" >            
+            <textarea class="inputNew" name="description" ng-model="bill.description" required placeholder="Enter Description *" maxlength="50"></textarea>
+            <span class="errorMessage"
+                  ng-show="bill.billCreate.description.$error.required 
+                  && bill.billCreate.description.$touched">
+                  Description is required!
+            </span>
+            <br/>                          
+            <input class="inputNew" name="itemAmount" type="number" ng-model="bill.itemAmount" required placeholder="Enter Amount *">
+            <span class="errorMessage"
+                  ng-show="bill.billCreate.itemAmount.$error.required 
+                  && bill.billCreate.itemAmount.$touched">
+                  Amount is required!
+            </span>
+            <br/>   
+            <select class="inputNew" name="billType" ng-model="bill.billType">
+               <option selected value="Rent">Rent/Mortgage</option>
+               <option value="Kids">kids Expense</option>
+               <option value="Grocery">Grocery</option>
+               <option value="Utilities">Utilities</option>
+               <option value="Credit">Credit Cards</option>
+               <option value="Trip">Trip/Tour</option>
+               <option value="Miscellaneous">Miscellaneous</option>
+               <option value="Others">Others</option>
+            </select>
+            <br/>                                   
+            <input class="inputNew" ng-model="bill.comments" maxlength="25" placeholder="Enter Comments">
+            <br/>
+            <input class="inputNew" type="date" ng-model="bill.createDate">
+             <br/> <br/>
+             <button type="submit" class="btn btn-primary" class="close" data-dismiss="modal" ng-click="bill.billModify()" ng-disabled="bill.billCreate.$invalid">{{bill.CreateEdit}}</button>
+         	<button type="button" class="btn btn-default " class="close" data-dismiss="modal">Cancel</button>
+         </form>
+      </modal>
+   </div>
+   <a ui-sref="billshellList">Back to BillShell</a>
+</div>

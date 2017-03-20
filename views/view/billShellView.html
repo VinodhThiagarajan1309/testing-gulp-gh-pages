@@ -1,0 +1,50 @@
+<div class="col-sm-9 col-sm-offset-1 col-md-10 col-md-offset-1 main">
+   <div ng-controller="BillShellController as billshell">
+      <h2 class="page-header "> BillShell </h2>
+      <div class="row placeholders" >
+         <info-message ng-if="billshell.shellMessage" message="billshell.shellMessage"></info-message>
+         <div class="col-sm-9 col-md-3 placeholder" 
+            ng-repeat="shell in billshell.billShell" 
+            ng-style="{background:billshell.getRandomColor(shell,$index)}">
+            <i class="fa fa-times" aria-hidden="true" 
+               ng-click="toggleModal('Delete ' + shell.sheetName,shell._id,$index)"></i>
+            <h4>{{shell.sheetName | lowercase}}</h4>
+            <p> {{shell.creationDate| date:YYMMD}}</p>
+            <a class="text-center" ui-sref="billView({shellID:shell._id})" > Bills</a>
+         </div>
+         <div class="col-sm-9 col-md-3  placeholderAdd"                             
+            ng-click="billshell.inputShow = true;"
+            ng-dblclick="billshell.inputShow = false" 
+            >
+            <h4 > Add New Shell </h4>
+            <span class="text-muted" ng-hide="billshell.inputShow">
+            <i class="fa fa-plus fa-2x" aria-hidden="true"></i></span>               
+            <form name="shellCreate" 
+               ng-submit="billshell.shellSubmit();
+               billshell.inputShow = false;">
+               <input name="name" type="text" required=""
+                  ng-model="billshell.shellNew"
+                  ng-show="billshell.inputShow" 
+                  autofocus="autofocus"
+                  placeholder="Enter Shell Name"/>
+               <div
+                  ng-show="shellCreate.name.$error.required 
+                  && shellCreate.name.$touched && billshell.inputShow">
+                  Name is required!
+               </div>
+               <input type="submit" 
+                  style="position: absolute; 
+                  left: -9999px; width: 1px; 
+                  height: 1px;"
+                  tabindex="-1" ng-disabled="shellCreate.$invalid" /> 
+            </form>
+         </div>
+      </div>
+      <modal visible="showModal">
+         <p> This action would delete all the bills associated with BillShell. Do you want to delete?</p>
+         <br>
+         <button type="button" class="btn btn-danger" class="close" ng-click="billshell.deleteShell(shell,index)" data-dismiss="modal">Go Ahead</button>
+         <button type="button" class="btn " class="close" data-dismiss="modal">Never</button>
+      </modal>
+   </div>
+</div>
