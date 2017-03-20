@@ -70,7 +70,7 @@ gulp.task('copy-images', function() {
 
 gulp.task('copy-node-modules', function () {
   gulp.src('!./node_modules/**')
-    .pipe(gulp.dest('dist/cade'));
+    .pipe(gulp.dest('dist/node_modules'));
 });
 
 gulp.task('copy-font-awesome', function () {
@@ -124,10 +124,9 @@ gulp.task('build', ['clean'],function() {
 });
 
 gulp.task('createFile', function() {
-    var filename = '.dingo';
-    var string = "";
-
      gulp.src('.nojekyll')
+    .pipe(gulp.dest('dist/'));
+     gulp.src('.temp')
     .pipe(gulp.dest('dist/'));
 });
 
